@@ -59,6 +59,13 @@ resource "azurerm_synapse_workspace" "workspace" {
     object_id = data.azurerm_client_config.current.object_id
     tenant_id = data.azurerm_client_config.current.tenant_id
   }
+
+  github_repo {
+    account_name    = "bittrance"
+    repository_name = "azure-datalake-demo"
+    branch_name     = "main"
+    root_folder     = "/sql"
+  }
 }
 
 resource "azurerm_synapse_firewall_rule" "allowall" {
