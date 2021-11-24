@@ -64,7 +64,7 @@ resource "azurerm_synapse_workspace" "workspace" {
     account_name    = "bittrance"
     repository_name = "azure-datalake-demo"
     branch_name     = "main"
-    root_folder     = "/sql"
+    root_folder     = "/"
   }
 }
 
