@@ -36,7 +36,7 @@ resource "azurerm_storage_account" "sa" {
 
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/6659
 resource "azurerm_role_assignment" "storage_role" {
-  scope                = data.azurerm_client_config.current.subscription_id
+  scope                = azurerm_resource_group.rg.id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = data.azurerm_client_config.current.object_id
 }
@@ -59,4 +59,11 @@ resource "azurerm_synapse_workspace" "workspace" {
     object_id = data.azurerm_client_config.current.object_id
     tenant_id = data.azurerm_client_config.current.tenant_id
   }
+}
+
+resource "azurerm_synapse_firewall_rule" "allowall" {
+  name                 = "allowAll"
+  synapse_workspace_id = azurerm_synapse_workspace.workspace.id
+  start_ip_address     = "0.0.0.0"
+  end_ip_address       = "255.255.255.255"
 }
