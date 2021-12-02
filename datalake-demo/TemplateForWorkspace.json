@@ -13,12 +13,32 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('workspaceName'), '/SQL script 1')]",
+			"name": "[concat(parameters('workspaceName'), '/Count GitHub events in big dataset')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"content": {
-					"query": "-- Foobar",
+					"query": "select count(*) \nfrom openrowset(\n    bulk 'https://bittrancedatalakedemo.dfs.core.windows.net/big-data/big-set/', \n    format = 'csv', \n    fieldterminator ='0x0b', \n    fieldquote = '0x0b', \n    rowterminator = '0x0a'\n) with (\n    doc nvarchar(max)\n) as rows cross apply openjson(doc, '$') with (\n    \"id\" varchar(20)\n)",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Count GitHub events in small dataset')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "select count(*) \nfrom openrowset(\n    bulk 'https://bittrancedatalakedemo.dfs.core.windows.net/big-data/small-set/', \n    format = 'csv', \n    fieldterminator ='0x0b', \n    fieldquote = '0x0b', \n    rowterminator = '0x0a'\n) with (\n    doc nvarchar(max)\n) as rows cross apply openjson(doc, '$') with (\n    \"id\" varchar(20)\n)",
 					"metadata": {
 						"language": "sql"
 					},
