@@ -1,17 +1,17 @@
 {
-   "name": "Count GitHub events in big dataset",
-   "properties": {
-      "content": {
-         "query": "select count(*) from openrowset(bulk 'https://bittrancedatalakedemo.dfs.core.windows.net/big-data/big-set/', format = 'csv', fieldterminator ='0x0b', fieldquote = '0x0b', rowterminator = '0x0a' ) with (doc nvarchar(max)) as rows cross apply openjson(doc, '$') with (\"id\" varchar(20))",
-         "metadata": {
-            "language": "sql"
-         },
-         "currentConnection": {
-            "databaseName": "master",
-            "poolName": "Built-in"
-         },
-         "resultLimit": 5000
-      },
-      "type": "SqlQuery"
-   }
+	"name": "Count GitHub events in big dataset",
+	"properties": {
+		"content": {
+			"query": "select count(*) \nfrom openrowset(\n    bulk 'https://bittrancedatalakedemo.dfs.core.windows.net/big-data/big-set/', \n    format = 'csv', \n    fieldterminator ='0x0b', \n    fieldquote = '0x0b', \n    rowterminator = '0x0a'\n) with (\n    doc nvarchar(max)\n) as rows cross apply openjson(doc, '$') with (\n    \"id\" varchar(20)\n)",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
 }
