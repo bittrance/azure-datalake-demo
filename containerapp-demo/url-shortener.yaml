@@ -1,0 +1,38 @@
+kind: containerapp
+location: West Europe
+name: containerapps-demo
+resourceGroup: containerapps-demo
+type: Microsoft.App/containerApps
+properties:
+  managedEnvironmentId: /subscriptions/78794a1a-58c3-4c66-8d09-95a82bc79416/resourceGroups/containerapps-demo/providers/Microsoft.App/managedEnvironments/containerapps-demo
+  configuration:
+    activeRevisionsMode: Multiple
+    ingress:
+      external: true
+      allowInsecure: false
+      targetPort: 8080
+      transport: Auto
+    dapr:
+      enabled: true
+      appId: containerapps-demo
+      appPort: 8080
+      appProtocol: http
+  template:
+    containers:
+      - image: ghcr.io/bittrance/url-shortener
+        name: url-shortener
+        env:
+          - name: POSTGRES_HOST
+            value: containerapps-demo.postgres.database.azure.com
+          - name: POSTGRES_DB
+            value: urlshortener
+          - name: POSTGRES_USERNAME
+            value: urlshortener@containerapps-demo
+          - name: POSTGRES_PASSWORD
+            value: verrahsecret
+        resources:
+          cpu: 0.5
+          memory: 1Gi
+    scale:
+      minReplicas: 1
+      maxReplicas: 3
