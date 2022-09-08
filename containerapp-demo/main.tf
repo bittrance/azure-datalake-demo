@@ -48,6 +48,7 @@ resource "azurerm_subnet" "this" {
   address_prefixes     = ["10.0.0.0/20"]
 }
 
+# There is no Container Apps support yet, because of https://github.com/Azure/azure-rest-api-specs/issues/19285
 resource "azapi_resource" "managed_environment" {
   type                      = "Microsoft.App/managedEnvironments@2022-03-01"
   name                      = "containerapps-demo"
