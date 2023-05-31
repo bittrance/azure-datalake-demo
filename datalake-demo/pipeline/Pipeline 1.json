@@ -17,6 +17,9 @@
 				"typeProperties": {
 					"url": "https://ifconfig.co/json",
 					"method": "GET",
+					"headers": {
+						"User-Agent": "curl"
+					},
 					"httpRequestTimeout": "00:01:30"
 				}
 			}
