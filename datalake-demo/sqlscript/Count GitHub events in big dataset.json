@@ -2,7 +2,7 @@
 	"name": "Count GitHub events in big dataset",
 	"properties": {
 		"content": {
-			"query": "select count(*) \nfrom openrowset(\n    bulk 'https://bittrancedatalakedemo.dfs.core.windows.net/big-data/big-set/', \n    format = 'csv', \n    fieldterminator ='0x0b', \n    fieldquote = '0x0b', \n    rowterminator = '0x0a'\n) with (\n    doc nvarchar(max)\n) as rows cross apply openjson(doc, '$') with (\n    \"id\" varchar(20)\n)",
+			"query": "select count(*) \nfrom openrowset(\n    bulk 'https://bittrancedatalakedemo.dfs.core.windows.net/big-data/big-set/', \n    format = 'csv', \n    fieldterminator ='0x0b', \n    fieldquote = '0x0b', \n    rowterminator = '0x0a'\n) with (\n    doc nvarchar(max)\n) as rows cross apply openjson(doc, '$') with (\n    \"id\" varchar(30)\n)",
 			"metadata": {
 				"language": "sql"
 			},
