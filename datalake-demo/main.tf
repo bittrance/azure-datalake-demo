@@ -1,9 +1,9 @@
 terraform {
-  required_version = "1.0.8"
+  required_version = "1.4.6"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "2.86.0"
+      version = "3.58.0"
     }
   }
 }
@@ -54,6 +54,10 @@ resource "azurerm_synapse_workspace" "workspace" {
   sql_administrator_login              = "sqladminuser"
   sql_administrator_login_password     = random_string.admin_password.result
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   aad_admin {
     login     = "bittrance@gmail.com"
     object_id = data.azurerm_client_config.current.object_id
@@ -64,7 +68,7 @@ resource "azurerm_synapse_workspace" "workspace" {
     account_name    = "bittrance"
     repository_name = "azure-datalake-demo"
     branch_name     = "main"
-    root_folder     = "/"
+    root_folder     = "/datalake-demo"
   }
 }
 
