@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ifconfig",
+				"name": "HelloWorld",
 				"type": "WebActivity",
 				"dependsOn": [],
 				"policy": {
@@ -15,12 +15,12 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"url": "https://ifconfig.co/json",
+					"url": "https://powershell-example.azurewebsites.net/api/helloworld",
 					"method": "GET",
-					"headers": {
-						"User-Agent": "curl"
-					},
-					"httpRequestTimeout": "00:01:30"
+					"authentication": {
+						"type": "MSI",
+						"resource": "8f4d0206-46fa-45d1-842f-8acd03b868c6"
+					}
 				}
 			}
 		],
