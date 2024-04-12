@@ -1,0 +1,15 @@
+{
+  "name": "bittrance-test-hello",
+  "version": "1.0.0",
+  "description": "Example Functions App for testing",
+  "main": "src/functions/*.js",
+  "scripts": {
+    "start": "func start"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.0.0"
+  },
+  "devDependencies": {
+    "azure-functions-core-tools": "^4.x"
+  }
+}
