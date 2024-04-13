@@ -94,10 +94,24 @@ resource "azurerm_key_vault_secret" "app_secret" {
   depends_on   = [azurerm_role_assignment.self_write]
 }
 
+resource "random_uuid" "users_role_id" {}
+
 resource "random_uuid" "permission_id" {}
 
 resource "azuread_application" "app" {
   display_name = "bittrance-test-hello"
+
+  identifier_uris = [
+    "api://bittrance-test-hello"
+  ]
+
+  app_role {
+    allowed_member_types = ["User", "Application"]
+    description          = "Allow apps and users to invoke the hello function"
+    display_name         = "Bittrance Test Hello Users"
+    id                   = random_uuid.users_role_id.result
+    value                = "users"
+  }
 
   api {
     requested_access_token_version = 2
@@ -113,6 +127,16 @@ resource "azuread_application" "app" {
       value                      = "use"
     }
   }
+  lifecycle {
+    ignore_changes = [
+      owners,
+    ]
+  }
+}
+
+resource "azuread_service_principal" "app" {
+  client_id = azuread_application.app.client_id
+  app_role_assignment_required = true
 }
 
 # Convenient to get test creds with `az account get-access-token --resource XXX`
