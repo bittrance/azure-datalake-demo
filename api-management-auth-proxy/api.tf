@@ -72,8 +72,22 @@ resource "azurerm_api_management_api_operation_policy" "example" {
   xml_content = <<XML
 <policies>
     <inbound>
-        <set-backend-service backend-id="${azurerm_api_management_backend.backend.name}" />
+        <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
+            <openid-config url="https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0/.well-known/openid-configuration" />
+            <issuers>
+                <issuer>https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0</issuer>
+            </issuers>
+            <required-claims>
+                <claim name="aud">
+                    <value>${azuread_application.app.client_id}</value>
+                </claim>
+                <claim name="roles">
+                    <value>users</value>
+                </claim>
+            </required-claims>
+        </validate-jwt>
         <base/>
+        <set-backend-service backend-id="${azurerm_api_management_backend.backend.name}" />
     </inbound>
 </policies>
 XML
