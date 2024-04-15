@@ -1,6 +1,6 @@
 # Using Azure API Management to publish services
 
-This Terraform configuration sets up an Example Function App with authn/authz and implements [Azure API Management scenario #1](https://learn.microsoft.com/en-us/azure/api-management/authentication-authorization-overview) which has API Management perform additional JWT validation for a backend that already performs its own Azure Entra-based OAuth2 authentication.
+This Terraform configuration sets up an example Function App exposing a REST API which performs its own Azure Entra-based OAuth2 authentication and authorization and implements [Azure API Management scenario #1](https://learn.microsoft.com/en-us/azure/api-management/authentication-authorization-overview) which has API Management perform additional JWT validation. Note that this configuration only supports OAuth 2.0 code flow for the example Function App. Put differently, it assumes that all requests to the REST API include authorization headers with valid JWT tokens. The caller is responsible for obtaining an access token (see testing below).
 
 A real-world setup would have the Azure Function App on a private subnet, but this requires an expensive service plan and additional configuration on the API Management instance. The purpose of this example is to demonstrate authn/authz with Azure API Management, so we keep it simple and use a public Function App, which anyway authenticates separately.
 

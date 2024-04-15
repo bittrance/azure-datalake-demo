@@ -47,7 +47,6 @@ resource "azurerm_linux_function_app" "app" {
 
     active_directory_v2 {
       client_id                  = azuread_application.app.application_id
-      client_secret_setting_name = "APPCLIENTSECRET"
       tenant_auth_endpoint       = "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0"
     }
   }
@@ -57,41 +56,6 @@ resource "azurerm_linux_function_app" "app" {
       tags,
     ]
   }
-
-  depends_on = [azurerm_key_vault_secret.app_secret]
-}
-
-resource "azurerm_key_vault" "kv" {
-  name                      = "bittrancehelloapp"
-  location                  = azurerm_resource_group.rg.location
-  resource_group_name       = azurerm_resource_group.rg.name
-  sku_name                  = "standard"
-  tenant_id                 = data.azurerm_client_config.current.tenant_id
-  enable_rbac_authorization = true
-}
-
-resource "azurerm_role_assignment" "self_write" {
-  scope                = azurerm_key_vault.kv.id
-  role_definition_name = "Key Vault Administrator"
-  principal_id         = data.azurerm_client_config.current.object_id
-}
-
-resource "azurerm_role_assignment" "app_kv_read" {
-  scope                = azurerm_key_vault.kv.id
-  role_definition_name = "Key Vault Secrets User"
-  principal_id         = azurerm_linux_function_app.app.identity[0].principal_id
-}
-
-resource "random_string" "app_secret" {
-  length  = 40
-  special = true
-}
-
-resource "azurerm_key_vault_secret" "app_secret" {
-  name         = "APPCLIENTSECRET"
-  value        = random_string.app_secret.result
-  key_vault_id = azurerm_key_vault.kv.id
-  depends_on   = [azurerm_role_assignment.self_write]
 }
 
 resource "random_uuid" "users_role_id" {}
